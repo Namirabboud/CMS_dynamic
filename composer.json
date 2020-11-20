@@ -1,0 +1,28 @@
+{
+    "name": "eve/dynamic",
+    "description": "dynamic route controller view for eve cms",
+    "type": "library",
+    "authors": [
+        {
+            "name": "namir abboud",
+            "email": "namir.abboud@tedmob.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "Eve\\Dynamic\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Eve\\Dynamic\\DynamicRouteServiceProvider"
+            ]
+        }
+    },
+
+    "require": {
+        "eve/cms": "*"
+    }
+}
