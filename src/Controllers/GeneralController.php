@@ -23,7 +23,7 @@ class GeneralController extends Controller
 
         $model_name = request('model_name');
 
-        $model = app("App\\$model_name");
+        $model = app("App\Models\\$model_name");
 
         $fields = TableField::where('model_name', $model_name)->orderBy('order', 'asc')->where('is_visible', true)->get();
 
@@ -66,7 +66,7 @@ class GeneralController extends Controller
                 else if($type == 'foreign'){
 
                     $foreign_model_name = $field->foreign_table;
-                    $foreignModel = app("App\\$foreign_model_name");
+                    $foreignModel = app("App\Models\\$foreign_model_name");
                     $foreignInstance = $foreignModel->find($f);
 
                     return $this->drawLink(route('admin.general.index').'?model_name='.$field->foreign_table.'&row_id='.$f, $foreignInstance->{$field->foreign_field});
@@ -174,7 +174,7 @@ class GeneralController extends Controller
                 //get the select-box data from foreign table
                 $option_name = $field->foreign_field;
                 $foreign_table = $field->foreign_table;
-                $foreign = app("App\\$foreign_table");
+                $foreign = app("App\Models\\$foreign_table");
                 $select_box_options = $foreign::all()->pluck($option_name,'id')->toArray();
 
 
@@ -209,7 +209,7 @@ class GeneralController extends Controller
 
         $model_name = request('model_name');
 
-        $model = app("App\\$model_name");
+        $model = app("App\Models\\$model_name");
         $instance = new $model;
         $table_name = $instance->getTable();
 
@@ -306,7 +306,7 @@ class GeneralController extends Controller
 
         $model_name = request('model_name');
 
-        $model = app("App\\$model_name");
+        $model = app("App\Models\\$model_name");
 
         $r = $model::find($id);
 
@@ -327,7 +327,7 @@ class GeneralController extends Controller
                 //get the select-box data from foreign table
                 $option_name = $field->foreign_field;
                 $foreign_table = $field->foreign_table;
-                $foreign = app("App\\$foreign_table");
+                $foreign = app("App\Models\\$foreign_table");
                 $select_box_options = $foreign::all()->pluck($option_name,'id')->toArray();
 
 
@@ -364,7 +364,7 @@ class GeneralController extends Controller
 
         $model_name = request('model_name');
 
-        $model = app("App\\$model_name");
+        $model = app("App\Models\\$model_name");
         $instance = new $model;
         $table_name = $instance->getTable();
 
@@ -457,7 +457,7 @@ class GeneralController extends Controller
 
         $model_name = request('model_name');
 
-        $model = app("App\\$model_name");
+        $model = app("App\Models\\$model_name");
 
         $r = $model::find($id);
 
@@ -506,7 +506,7 @@ class GeneralController extends Controller
         $model_name = request('model_name');
         $field_name = request('field_name');
 
-        $model = app("App\\$model_name");
+        $model = app("App\Models\\$model_name");
 
         $p = $model::find($id);
 
