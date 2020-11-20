@@ -167,7 +167,7 @@ class GeneralController extends Controller
 
             if($field->field_type == 'multiple-file-upload'){
                 $query_string .= '&field_name='.$field->field_name;
-                $form_fields[] = $this->drawHtml('multiple-file-upload', slugToString($field->field_name), $field->field_name, null, ['add' => route('admin.generalImage.upload').'?'.$query_string, 'delete' => route('admin.generalImage.delete').'?'.$query_string, 'default' => null],'', 'col-md-12');
+                $form_fields[] = $this->drawHtml('multiple-file-upload', slugToString($field->field_name), $field->field_name, null, ['add' => route('admin.generalImage.upload').'?'.$query_string, 'delete' => route('admin.generalImage.delete').'?'.$query_string, 'default' => null],'', $field->class);
 
             }elseif($field->field_type == 'foreign'){
 
@@ -178,10 +178,10 @@ class GeneralController extends Controller
                 $select_box_options = $foreign::all()->pluck($option_name,'id')->toArray();
 
 
-                $form_fields[] = $this->drawHtml('select-box', slugToString($field->field_name), $field->field_name, $request->old($field->field_name) , $select_box_options, '', 'col-md-12 '.($field->mandatory ? ' required' : ''));
+                $form_fields[] = $this->drawHtml('select-box', slugToString($field->field_name), $field->field_name, $request->old($field->field_name) , $select_box_options, '', $field->class.' '.($field->mandatory ? ' required' : ''));
 
             }else{
-                $form_fields[] = $this->drawHtml($field->field_type, slugToString($field->field_name), $field->field_name, $request->old($field->field_name) , null, '', 'col-md-12 '.($field->mandatory ? ' required' : ''));
+                $form_fields[] = $this->drawHtml($field->field_type, slugToString($field->field_name), $field->field_name, $request->old($field->field_name) , null, '', $field->class.' '.($field->mandatory ? ' required' : ''));
             }
         }
 
@@ -320,7 +320,7 @@ class GeneralController extends Controller
             if($field->field_type == 'multiple-file-upload'){
 
                 $query_string .= '&field_name='.$field->field_name;
-                $form_fields[] = $this->drawHtml('multiple-file-upload', slugToString($field->field_name), $field->field_name,  $r->{'my'.ucfirst($field->field_name)}, ['add' => route('admin.generalImage.upload').'?'.$query_string, 'delete' => route('admin.generalImage.deleteEdit').'?'.$query_string, 'default' => route('admin.generalImage.get', $r->id).'?'.$query_string],'', 'col-md-12');
+                $form_fields[] = $this->drawHtml('multiple-file-upload', slugToString($field->field_name), $field->field_name,  $r->{'my'.ucfirst($field->field_name)}, ['add' => route('admin.generalImage.upload').'?'.$query_string, 'delete' => route('admin.generalImage.deleteEdit').'?'.$query_string, 'default' => route('admin.generalImage.get', $r->id).'?'.$query_string],'', $field->class);
 
             }elseif($field->field_type == 'foreign'){
 
@@ -331,10 +331,10 @@ class GeneralController extends Controller
                 $select_box_options = $foreign::all()->pluck($option_name,'id')->toArray();
 
 
-                $form_fields[] = $this->drawHtml('select-box', slugToString($field->field_name), $field->field_name, $r->{$field->field_name} , $select_box_options, '', 'col-md-12 '.($field->mandatory ? ' required' : ''));
+                $form_fields[] = $this->drawHtml('select-box', slugToString($field->field_name), $field->field_name, $r->{$field->field_name} , $select_box_options, '', $field->class.' '.($field->mandatory ? ' required' : ''));
 
             }else{
-                $form_fields[] = $this->drawHtml($field->field_type, slugToString($field->field_name), $field->field_name, $r->{$field->field_name} , null, '', 'col-md-12 '.($field->mandatory ? ' required' : ''));
+                $form_fields[] = $this->drawHtml($field->field_type, slugToString($field->field_name), $field->field_name, $r->{$field->field_name} , null, '', $field->class.' '.($field->mandatory ? ' required' : ''));
             }
         }
 

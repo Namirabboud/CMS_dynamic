@@ -31,6 +31,8 @@ class CreateTableFieldsTable extends Migration
 
             $table->boolean('mandatory')->default(false);
 
+            $table->string('class')->nullable();
+
             $table->boolean('is_visible')->default(true);
             $table->index('is_visible');
 

@@ -1,7 +1,11 @@
 <?php
 
+namespace Database\Seeders;
+
 use Illuminate\Database\Seeder;
 use Eve\Dynamic\Models\TableField;
+use Illuminate\Support\Facades\DB;
+
 
 class TableFieldsSeeder extends Seeder
 {
