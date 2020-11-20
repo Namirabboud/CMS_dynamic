@@ -1,6 +1,6 @@
 <?php
 
-namespace Eve\Cms;
+namespace Eve\Dynamic\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
