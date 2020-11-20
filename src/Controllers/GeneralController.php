@@ -193,7 +193,7 @@ class GeneralController extends Controller
 
             'boxes' => [
                 [
-                    'wrapper-class' => 'col-md-6',
+                    'wrapper-class' => 'col-md-12',
                     'class' => 'box-default',
                     'box-header' => 'Info',
                     'form_fields' => $form_fields,
@@ -347,7 +347,7 @@ class GeneralController extends Controller
 
             'boxes' => [
                 [
-                    'wrapper-class' => 'col-md-6',
+                    'wrapper-class' => 'col-md-12',
                     'class' => 'box-default',
                     'box-header' => 'Info',
                     'form_fields' => $form_fields,
