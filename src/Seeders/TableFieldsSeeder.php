@@ -3,7 +3,7 @@
 use Illuminate\Database\Seeder;
 use Eve\Dynamic\Models\TableField;
 
-class DatabaseSeeder extends Seeder
+class TableFieldsSeeder extends Seeder
 {
 
     public $tables = ['table_fields'];
