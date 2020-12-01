@@ -225,7 +225,7 @@ class GeneralController extends Controller
 
 
             if($field->field_type == 'image'){
-                $rules[] = 'image';
+                //$rules[] = 'image';
                 $rules[] = 'max:700';
             }
 
@@ -384,7 +384,7 @@ class GeneralController extends Controller
 
             if($field->field_type == 'image'){
                 $rules[] = 'nullable';
-                $rules[] = 'image';
+                //$rules[] = 'image';
                 $rules[] = 'max:700';
             }
 
