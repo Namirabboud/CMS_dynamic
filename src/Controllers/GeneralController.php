@@ -241,7 +241,7 @@ class GeneralController extends Controller
             $name = $field->field_name;
             $type = $field->field_type;
 
-            if($type == 'image'){
+            if($type == 'image' && request($name)){
                 $this->removeFile($model->image);
                 $model->{$name} = $this->moveFile(request($name),'images/'.$model_name);
             }
@@ -399,7 +399,7 @@ class GeneralController extends Controller
             $name = $field->field_name;
             $type = $field->field_type;
 
-            if($type == 'image'){
+            if($type == 'image' && request($name)){
                 $this->removeFile($model->image);
                 $r->{$name} = $this->moveFile(request($name),'images/'.$model_name);
             }
