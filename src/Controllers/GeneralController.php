@@ -457,7 +457,7 @@ class GeneralController extends Controller
                     }
                 }
             }else if($type == 'checkbox'){
-                $model->{$name} = request($name) ? true : false;
+                $r->{$name} = request($name) ? true : false;
             }
 
             else{
