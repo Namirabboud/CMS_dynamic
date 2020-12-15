@@ -7,6 +7,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Traits\FormTrait;
 use App\Http\Traits\FileTrait;
+use Illuminate\Support\Facades\DB;
 use Eve\Dynamic\Models\TableField;
 use App\Http\Controllers\Controller;
 
@@ -165,20 +166,24 @@ class GeneralController extends Controller
 
         foreach($fields as $field){
 
-            if($field->field_type == 'multiple-file-upload'){
+            if($field->foreign_table){
+
+                $foreign_model = $field->foreign_table;
+                $foreign = app("App\Models\\$foreign_model");
+
+                $option_value = $field->other_field;
+                $option_key = $field->foreign_field;
+
+                $options = $foreign::select(DB::raw("CONCAT(".$option_key.") AS option_key"), $option_value)->get()
+                    ->pluck($option_key,$option_value)->toArray();
+
+
+                $form_fields[] = $this->drawHtml('select-box', slugToString($field->field_name), $field->field_name, $request->old($field->field_name) , $options, '', $field->class.' '.($field->mandatory ? ' required' : ''));
+
+
+            }elseif ($field->field_type == 'multiple-file-upload'){
                 $query_string .= '&field_name='.$field->field_name;
                 $form_fields[] = $this->drawHtml('multiple-file-upload', slugToString($field->field_name), $field->field_name, null, ['add' => route('admin.generalImage.upload').'?'.$query_string, 'delete' => route('admin.generalImage.delete').'?'.$query_string, 'default' => null],'', $field->class);
-
-            }elseif($field->field_type == 'foreign'){
-
-                //get the select-box data from foreign table
-                $option_name = $field->foreign_field;
-                $foreign_table = $field->foreign_table;
-                $foreign = app("App\Models\\$foreign_table");
-                $select_box_options = $foreign::all()->pluck($option_name,'id')->toArray();
-
-
-                $form_fields[] = $this->drawHtml('select-box', slugToString($field->field_name), $field->field_name, $request->old($field->field_name) , $select_box_options, '', $field->class.' '.($field->mandatory ? ' required' : ''));
 
             }else{
                 $form_fields[] = $this->drawHtml($field->field_type, slugToString($field->field_name), $field->field_name, $request->old($field->field_name) , null, '', $field->class.' '.($field->mandatory ? ' required' : ''));

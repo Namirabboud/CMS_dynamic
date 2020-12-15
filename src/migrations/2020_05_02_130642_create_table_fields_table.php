@@ -21,9 +21,12 @@ class CreateTableFieldsTable extends Migration
 
             $table->string('field_name')->nullable();
             $table->string('field_type')->nullable();
+
+
             $table->string('foreign_table')->nullable();
             $table->index('foreign_table');
             $table->string('foreign_field')->nullable();
+            $table->string('other_field')->nullable();
 
 
             $table->integer('order')->nullable();
