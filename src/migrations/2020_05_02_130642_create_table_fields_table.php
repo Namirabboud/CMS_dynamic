@@ -28,6 +28,8 @@ class CreateTableFieldsTable extends Migration
             $table->string('foreign_field')->nullable();
             $table->string('other_field')->nullable();
 
+            $table->text('options')->nullable();
+
 
             $table->integer('order')->nullable();
             $table->index('order');

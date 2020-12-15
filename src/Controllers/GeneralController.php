@@ -171,13 +171,18 @@ class GeneralController extends Controller
                 $foreign_model = $field->foreign_table;
                 $foreign = app("App\Models\\$foreign_model");
 
-                $option_value = $field->other_field;
-                $option_key = $field->foreign_field;
+                $option_key = $field->other_field;
+                $option_value = $field->foreign_field;
 
                 $options = $foreign::select(DB::raw("CONCAT(".$option_key.") AS option_key"), $option_value)->get()
-                    ->pluck($option_key,$option_value)->toArray();
+                    ->pluck('option_key',$option_value)->toArray();
+
+                $form_fields[] = $this->drawHtml('select-box', slugToString($field->field_name), $field->field_name, $request->old($field->field_name) , $options, '', $field->class.' '.($field->mandatory ? ' required' : ''));
 
 
+            }elseif($field->field_type == 'select-box'){
+
+                $options = json_decode($field->options);
                 $form_fields[] = $this->drawHtml('select-box', slugToString($field->field_name), $field->field_name, $request->old($field->field_name) , $options, '', $field->class.' '.($field->mandatory ? ' required' : ''));
 
 
@@ -249,9 +254,10 @@ class GeneralController extends Controller
             if($type == 'image' && request($name)){
                 $this->removeFile($model->image);
                 $model->{$name} = $this->moveFile(request($name),'images/'.$model_name);
-            }
 
-            else{
+            }else if($type == 'checkbox'){
+                $model->{$name} = request($name) ? true : false;
+            } else{
                 $model->{$name} = request($name);
             }
         }
@@ -322,21 +328,29 @@ class GeneralController extends Controller
 
         foreach($fields as $field){
 
-            if($field->field_type == 'multiple-file-upload'){
+            if($field->foreign_table){
+
+                $foreign_model = $field->foreign_table;
+                $foreign = app("App\Models\\$foreign_model");
+
+                $option_key = $field->other_field;
+                $option_value = $field->foreign_field;
+
+                $options = $foreign::select(DB::raw("CONCAT(".$option_key.") AS option_key"), $option_value)->get()
+                    ->pluck('option_key',$option_value)->toArray();
+
+                $form_fields[] = $this->drawHtml('select-box', slugToString($field->field_name), $field->field_name, $r->{$field->field_name} , $options, '', $field->class.' '.($field->mandatory ? ' required' : ''));
+
+            }else if($field->field_type == 'multiple-file-upload'){
 
                 $query_string .= '&field_name='.$field->field_name;
                 $form_fields[] = $this->drawHtml('multiple-file-upload', slugToString($field->field_name), $field->field_name,  $r->{'my'.ucfirst($field->field_name)}, ['add' => route('admin.generalImage.upload').'?'.$query_string, 'delete' => route('admin.generalImage.deleteEdit').'?'.$query_string, 'default' => route('admin.generalImage.get', $r->id).'?'.$query_string],'', $field->class);
 
-            }elseif($field->field_type == 'foreign'){
+            }elseif($field->field_type == 'select-box'){
 
-                //get the select-box data from foreign table
-                $option_name = $field->foreign_field;
-                $foreign_table = $field->foreign_table;
-                $foreign = app("App\Models\\$foreign_table");
-                $select_box_options = $foreign::all()->pluck($option_name,'id')->toArray();
+                $options = json_decode($field->options);
+                $form_fields[] = $this->drawHtml('select-box', slugToString($field->field_name), $field->field_name, $r->{$field->field_name} , $options, '', $field->class.' '.($field->mandatory ? ' required' : ''));
 
-
-                $form_fields[] = $this->drawHtml('select-box', slugToString($field->field_name), $field->field_name, $r->{$field->field_name} , $select_box_options, '', $field->class.' '.($field->mandatory ? ' required' : ''));
 
             }else{
                 $form_fields[] = $this->drawHtml($field->field_type, slugToString($field->field_name), $field->field_name, $r->{$field->field_name} , null, '', $field->class.' '.($field->mandatory ? ' required' : ''));
@@ -442,6 +456,8 @@ class GeneralController extends Controller
                         }
                     }
                 }
+            }else if($type == 'checkbox'){
+                $model->{$name} = request($name) ? true : false;
             }
 
             else{
