@@ -418,9 +418,12 @@ class GeneralController extends Controller
             $name = $field->field_name;
             $type = $field->field_type;
 
-            if($type == 'image' && request($name)){
-                $this->removeFile($model->image);
-                $r->{$name} = $this->moveFile(request($name),'images/'.$model_name);
+            if($type == 'image' ){
+                if(request($name)){
+                    $this->removeFile($model->image);
+                    $r->{$name} = $this->moveFile(request($name),'images/'.$model_name);
+                }else
+                    continue;
             }
 
             else if($type == 'multiple-file-upload'){
