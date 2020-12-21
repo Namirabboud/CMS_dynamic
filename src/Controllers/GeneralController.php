@@ -424,6 +424,7 @@ class GeneralController extends Controller
                     $r->{$name} = $this->moveFile(request($name),'images/'.$model_name);
                 }else
                     continue;
+                
             }
 
             else if($type == 'multiple-file-upload'){
