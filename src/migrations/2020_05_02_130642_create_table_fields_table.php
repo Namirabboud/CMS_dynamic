@@ -20,6 +20,8 @@ class CreateTableFieldsTable extends Migration
             $table->index('model_name');
 
             $table->string('field_name')->nullable();
+            $table->string('field_label')->nullable();
+
             $table->string('field_type')->nullable();
 
 

@@ -38,9 +38,6 @@ class GeneralController extends Controller
         $tableHeaders[] = 'ID';
 
 
-
-
-
         $data = $model::when(request('row_id'),function($q){
             $q->where('id', request('row_id'));
         })->when(request('filter_field'), function($q){
@@ -55,24 +52,21 @@ class GeneralController extends Controller
 
                 $f = $row->{$field->field_name};
                 $type = $field->field_type;
+                $foreign_model_name = $field->foreign_table;
 
+                if($foreign_model_name){
 
+                    $foreignModel = app("App\Models\\$foreign_model_name");
+                    $foreignInstance = $foreignModel->find($f);
 
-                if($type == 'checkbox')
+                    return $this->drawLink(route('admin.general.index').'?model_name='.$field->foreign_table.'&row_id='.$f, $foreignInstance->{$field->other_field});
+                }
+
+                else if($type == 'checkbox')
                     return $f ? 'true' : 'false';
 
                 else if($type == 'image')
                     return $this->drawImage($f);
-
-                else if($type == 'foreign'){
-
-                    $foreign_model_name = $field->foreign_table;
-                    $foreignModel = app("App\Models\\$foreign_model_name");
-                    $foreignInstance = $foreignModel->find($f);
-
-                    return $this->drawLink(route('admin.general.index').'?model_name='.$field->foreign_table.'&row_id='.$f, $foreignInstance->{$field->foreign_field});
-
-                }
 
                 else return $f;
 
@@ -424,7 +418,7 @@ class GeneralController extends Controller
                     $r->{$name} = $this->moveFile(request($name),'images/'.$model_name);
                 }else
                     continue;
-                
+
             }
 
             else if($type == 'multiple-file-upload'){
