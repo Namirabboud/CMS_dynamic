@@ -77,7 +77,7 @@ class GeneralController extends Controller
 
             $rowColumns[] = $field_name;
             $columns[] = ['data' => $field_name, 'name' => $field_name];
-            $tableHeaders[] = slugToString($field->field_name);
+            $tableHeaders[] = $field->field_label;
         }
 
 
@@ -171,21 +171,21 @@ class GeneralController extends Controller
                 $options = $foreign::select(DB::raw("CONCAT(".$option_key.") AS option_key"), $option_value)->get()
                     ->pluck('option_key',$option_value)->toArray();
 
-                $form_fields[] = $this->drawHtml('select-box', slugToString($field->field_name), $field->field_name, $request->old($field->field_name) , $options, '', $field->class.' '.($field->mandatory ? ' required' : ''));
+                $form_fields[] = $this->drawHtml('select-box', $field->field_label, $field->field_name, $request->old($field->field_name) , $options, '', $field->class.' '.($field->mandatory ? ' required' : ''));
 
 
             }elseif($field->field_type == 'select-box'){
 
                 $options = json_decode($field->options);
-                $form_fields[] = $this->drawHtml('select-box', slugToString($field->field_name), $field->field_name, $request->old($field->field_name) , $options, '', $field->class.' '.($field->mandatory ? ' required' : ''));
+                $form_fields[] = $this->drawHtml('select-box', $field->field_label, $field->field_name, $request->old($field->field_name) , $options, '', $field->class.' '.($field->mandatory ? ' required' : ''));
 
 
             }elseif ($field->field_type == 'multiple-file-upload'){
                 $query_string .= '&field_name='.$field->field_name;
-                $form_fields[] = $this->drawHtml('multiple-file-upload', slugToString($field->field_name), $field->field_name, null, ['add' => route('admin.generalImage.upload').'?'.$query_string, 'delete' => route('admin.generalImage.delete').'?'.$query_string, 'default' => null],'', $field->class);
+                $form_fields[] = $this->drawHtml('multiple-file-upload', $field->field_label, $field->field_name, null, ['add' => route('admin.generalImage.upload').'?'.$query_string, 'delete' => route('admin.generalImage.delete').'?'.$query_string, 'default' => null],'', $field->class);
 
             }else{
-                $form_fields[] = $this->drawHtml($field->field_type, slugToString($field->field_name), $field->field_name, $request->old($field->field_name) , null, '', $field->class.' '.($field->mandatory ? ' required' : ''));
+                $form_fields[] = $this->drawHtml($field->field_type, $field->field_label, $field->field_name, $request->old($field->field_name) , null, '', $field->class.' '.($field->mandatory ? ' required' : ''));
             }
         }
 
@@ -333,21 +333,21 @@ class GeneralController extends Controller
                 $options = $foreign::select(DB::raw("CONCAT(".$option_key.") AS option_key"), $option_value)->get()
                     ->pluck('option_key',$option_value)->toArray();
 
-                $form_fields[] = $this->drawHtml('select-box', slugToString($field->field_name), $field->field_name, $r->{$field->field_name} , $options, '', $field->class.' '.($field->mandatory ? ' required' : ''));
+                $form_fields[] = $this->drawHtml('select-box', $field->field_label, $field->field_name, $r->{$field->field_name} , $options, '', $field->class.' '.($field->mandatory ? ' required' : ''));
 
             }else if($field->field_type == 'multiple-file-upload'){
 
                 $query_string .= '&field_name='.$field->field_name;
-                $form_fields[] = $this->drawHtml('multiple-file-upload', slugToString($field->field_name), $field->field_name,  $r->{'my'.ucfirst($field->field_name)}, ['add' => route('admin.generalImage.upload').'?'.$query_string, 'delete' => route('admin.generalImage.deleteEdit').'?'.$query_string, 'default' => route('admin.generalImage.get', $r->id).'?'.$query_string],'', $field->class);
+                $form_fields[] = $this->drawHtml('multiple-file-upload', $field->field_label, $field->field_name,  $r->{'my'.ucfirst($field->field_name)}, ['add' => route('admin.generalImage.upload').'?'.$query_string, 'delete' => route('admin.generalImage.deleteEdit').'?'.$query_string, 'default' => route('admin.generalImage.get', $r->id).'?'.$query_string],'', $field->class);
 
             }elseif($field->field_type == 'select-box'){
 
                 $options = json_decode($field->options);
-                $form_fields[] = $this->drawHtml('select-box', slugToString($field->field_name), $field->field_name, $r->{$field->field_name} , $options, '', $field->class.' '.($field->mandatory ? ' required' : ''));
+                $form_fields[] = $this->drawHtml('select-box', $field->field_label, $field->field_name, $r->{$field->field_name} , $options, '', $field->class.' '.($field->mandatory ? ' required' : ''));
 
 
             }else{
-                $form_fields[] = $this->drawHtml($field->field_type, slugToString($field->field_name), $field->field_name, $r->{$field->field_name} , null, '', $field->class.' '.($field->mandatory ? ' required' : ''));
+                $form_fields[] = $this->drawHtml($field->field_type, $field->field_label, $field->field_name, $r->{$field->field_name} , null, '', $field->class.' '.($field->mandatory ? ' required' : ''));
             }
         }
 
